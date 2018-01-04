@@ -15,32 +15,42 @@ import javax.servlet.http.HttpServletResponse;
 
 @Controller
 public class LoginController {
-
     @Autowired
-    UserService userService;
+    private UserService userService;
 
     @RequestMapping(value = "/login", method = RequestMethod.GET)
     public ModelAndView showLogin(HttpServletRequest request, HttpServletResponse response) {
-        ModelAndView modelAndView = new ModelAndView("login");
-        modelAndView.addObject("login", new Login());
-        return modelAndView;
+        // Create new MAV
+        ModelAndView mav = new ModelAndView("login");
+
+        // Add new Login model
+        mav.addObject("login", new Login());
+
+        // Return MAV
+        return mav;
     }
 
     @RequestMapping(value = "/loginProcess", method = RequestMethod.POST)
     public ModelAndView loginProcess(HttpServletRequest request, HttpServletResponse response, @ModelAttribute("login") Login login) {
-        ModelAndView modelAndView = null;
-
+        // Validate user login
         User user = userService.validateUser(login);
 
+        // If user successfully logged in
         if (user != null) {
-            modelAndView = new ModelAndView("welcome");
+            // Create new MAV redirecting to welcome page
+            return new ModelAndView("welcome");
         }
 
+        // If not
         else {
-            modelAndView = new ModelAndView("login");
-            modelAndView.addObject("message", "Username or password is incorrect!");
-        }
+            // Create new MAV redirecting to the same login page
+            ModelAndView mav = new ModelAndView("login");
 
-        return modelAndView;
+            // Add new message model
+            mav.addObject("message", "Username or password is incorrect!");
+
+            // Return MAV
+            return mav;
+        }
     }
 }

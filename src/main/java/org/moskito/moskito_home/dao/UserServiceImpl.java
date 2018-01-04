@@ -20,4 +20,9 @@ public class UserServiceImpl implements UserService {
     public User validateUser(Login login) {
         return userDao.validateUser(login);
     }
+
+    @Transactional
+    public User validateUser(String username) {
+        return userDao.validateUser(username);
+    }
 }

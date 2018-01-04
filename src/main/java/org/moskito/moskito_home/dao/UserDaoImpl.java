@@ -41,6 +41,17 @@ public class UserDaoImpl implements UserDao {
         return users.size() > 0 ? users.get(0) : null;
     }
 
+    public User validateUser(String username) {
+        // Form sql string
+        String sql = "SELECT * FROM users WHERE username='" + username + "'";
+
+        // Query the users
+        List<User> users = jdbcTemplate.query(sql, new UserMapper());
+
+        // Return user if successful or null
+        return users.size() > 0 ? users.get(0) : null;
+    }
+
     private static class UserMapper implements RowMapper<User> {
         public User mapRow(ResultSet rs, int i) throws SQLException {
             return new User(rs.getString("username"), rs.getString("password"), rs.getString("app_url"));

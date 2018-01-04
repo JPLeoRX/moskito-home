@@ -1,5 +1,9 @@
 package org.moskito.moskito_home.model;
 
+/**
+ * User POJO
+ * @author Leo Ertuna
+ */
 public class User {
     private String username;
     private String password;
