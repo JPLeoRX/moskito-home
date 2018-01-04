@@ -18,6 +18,11 @@
             </tr>
 
             <tr>
+                <td><form:label path="appUrl">App URL</form:label></td>
+                <td><form:input path="appUrl" name="app_url" id="app_url" /></td>
+            </tr>
+
+            <tr>
                 <td></td>
                 <td><form:button id="register" name="register">Register</form:button></td>
             </tr>
