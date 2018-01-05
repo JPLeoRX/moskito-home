@@ -36,6 +36,6 @@ public class UserRestController {
         log.debug("appUrl = " + appUrl);
 
         // Return new response
-        return new JsonAppUrlResponse(appUrl);
+        return new JsonAppUrlResponse(appUrl );
     }
 }
