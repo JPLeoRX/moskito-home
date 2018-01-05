@@ -2,29 +2,38 @@ package org.moskito.moskito_home.rest;
 
 import org.moskito.moskito_home.dao.UserService;
 import org.moskito.moskito_home.model.User;
+import org.moskito.moskito_home.rest.alexa_authorization.TokenDecoder;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 @RestController
-@RequestMapping("/api/users/{username}")
+@RequestMapping("/api/users/{accessToken}")
 public class UserRestController {
     private static final Logger log = LogManager.getLogger();
 
     @Autowired
     private UserService userService;
 
+    // http://localhost:8080/api/users/eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJsZW8ifQ.dhN4lO2A-Mq2yZ1pN-euRn86RS1kxjHoXXKVM2x21ew/app
     @RequestMapping(value = "/app", method = RequestMethod.GET)
-    public String getAppUrl(@PathVariable String username) {
-        log.debug("USERNAME = " + username);
+    public @ResponseBody JsonAppUrlResponse getAppUrl(@PathVariable String accessToken) {
+        log.debug("accessToken = " + accessToken);
 
+        // Decode the token
+        String username = TokenDecoder.getIssuer(accessToken);
+        log.debug("username = " + username);
+
+        // Get the user
         User user = userService.validateUser(username);
-        log.debug("USER = " + user);
+        log.debug("user = " + user);
 
-        return user.getAppUrl();
+        // Get the URL of user's app
+        String appUrl = user.getAppUrl();
+        log.debug("appUrl = " + appUrl);
+
+        // Return new response
+        return new JsonAppUrlResponse(appUrl);
     }
 }

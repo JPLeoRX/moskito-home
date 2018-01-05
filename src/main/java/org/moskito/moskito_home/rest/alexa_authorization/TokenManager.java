@@ -1,9 +1,5 @@
 package org.moskito.moskito_home.rest.alexa_authorization;
 
-import com.auth0.jwt.JWT;
-import com.auth0.jwt.exceptions.JWTDecodeException;
-import com.auth0.jwt.interfaces.DecodedJWT;
-
 public class TokenManager {
     private String username;
     private String accessToken;
