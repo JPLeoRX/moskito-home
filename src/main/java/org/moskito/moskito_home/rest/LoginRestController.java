@@ -51,6 +51,7 @@ public class LoginRestController {
 
     @RequestMapping(value = "/api/loginProcess", method = RequestMethod.POST)
     public ModelAndView alexaLoginProcess(HttpServletRequest request, HttpServletResponse response, @ModelAttribute("login") Login login, @ModelAttribute("alexaRequest") AlexaRequest alexaRequest) {
+        // See if we obtained correct data
         log.debug(alexaRequest);
 
         // Validate user login
@@ -59,9 +60,10 @@ public class LoginRestController {
         // If user successfully logged in
         if (user != null) {
             // Create new response for Alexa
-            AlexaResponse alexaResponse = new AlexaResponse(alexaRequest.getRedirectUrl(), alexaRequest.getState(), "myToken", alexaRequest.getResponseType());
+            AlexaResponse alexaResponse = new AlexaResponse(alexaRequest.getRedirectUrl(), alexaRequest.getState(), "myToken", "Bearer");
             log.debug(alexaResponse);
 
+            // Return new redirect MAV
             return new ModelAndView("redirect:" + alexaResponse.toUrl());
         }
 

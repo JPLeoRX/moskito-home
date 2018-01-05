@@ -2,13 +2,22 @@ package org.moskito.moskito_home.rest.alexa_authorization;
 
 import java.util.List;
 
+/**
+ * Alexa Request POJO
+ *
+ * This object represents all the data that is passed from Alexa Skill to our login page
+ *
+ * @author Leo Ertuna
+ */
 public class AlexaRequest {
-    private String state;           // Alexa's internal parameter, pass back unchanged
-    private String clientId;        // Alexa Skill's id, configured in developer's console
-    private String responseType;    // "Code" or "Token", we will use token
-    private List<String> scope;     // Optional parameter, we won't use it
-    private String redirectUrl;     // Amazon specific redirect URL to which we should redirect
+    private String state;               // Alexa's internal parameter, pass back unchanged
+    private String clientId;            // Alexa Skill's id, configured in developer's console
+    private String responseType;        // Response type - "Code" or "Token", we will use token
+    private List<String> scope;         // Optional list of scope parameters, we won't use it
+    private String redirectUrl;         // Amazon specific redirect URL to which we should redirect from our login page
 
+    // Constructors
+    //------------------------------------------------------------------------------------------------------------------
     public AlexaRequest() {
 
     }
@@ -20,7 +29,12 @@ public class AlexaRequest {
         this.scope = scope;
         this.redirectUrl = redirectUrl;
     }
+    //------------------------------------------------------------------------------------------------------------------
 
+
+
+    // Getters
+    //------------------------------------------------------------------------------------------------------------------
     public String getState() {
         return state;
     }
@@ -40,7 +54,12 @@ public class AlexaRequest {
     public String getRedirectUrl() {
         return redirectUrl;
     }
+    //------------------------------------------------------------------------------------------------------------------
 
+
+
+    // Setters
+    //------------------------------------------------------------------------------------------------------------------
     public void setState(String state) {
         this.state = state;
     }
@@ -60,6 +79,7 @@ public class AlexaRequest {
     public void setRedirectUrl(String redirectUrl) {
         this.redirectUrl = redirectUrl;
     }
+    //------------------------------------------------------------------------------------------------------------------
 
     @Override
     public String toString() {
