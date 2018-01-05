@@ -19,7 +19,7 @@ import java.util.List;
 
 @Controller
 @RestController
-@SessionAttributes("alexaRequest")
+@SessionAttributes(names = {"alexaRequest", "username"})
 public class LoginRestController {
     private static final Logger log = LogManager.getLogger();
 
@@ -74,12 +74,11 @@ public class LoginRestController {
 
         // If user successfully logged in
         if (user != null) {
-            // Create new response for Alexa
-            AlexaResponse alexaResponse = new AlexaResponse(alexaRequest.getRedirectUrl(), alexaRequest.getState(), new TokenManager(user.getUsername()).getAccessToken(), "Bearer");
-            log.debug(alexaResponse);
-
-            // Return new redirect MAV
-            return new ModelAndView("redirect:" + alexaResponse.toUrl());
+            // Create new MAV for redirecting
+            ModelAndView mav = new ModelAndView("/api/loginRedirect");
+            mav.addObject("alexaRequest", alexaRequest);
+            mav.addObject("username", user.getUsername());
+            return mav;
         }
 
         // If not
@@ -95,5 +94,18 @@ public class LoginRestController {
             // Return MAV
             return mav;
         }
+    }
+
+    @RequestMapping(value = "api/loginRedirect", method = RequestMethod.GET)
+    public ModelAndView redirect(HttpServletRequest request, HttpServletResponse response, @ModelAttribute("alexaRequest") AlexaRequest alexaRequest, @ModelAttribute("username") String username) {
+        // See if we obtained correct data
+        log.debug(alexaRequest);
+
+        // Create new response for Alexa
+        AlexaResponse alexaResponse = new AlexaResponse(alexaRequest.getRedirectUrl(), alexaRequest.getState(), new TokenManager(username).getAccessToken(), "Bearer");
+        log.debug(alexaResponse);
+
+        // Return new redirect MAV
+        return new ModelAndView("redirect:" + alexaResponse.toUrl());
     }
 }
