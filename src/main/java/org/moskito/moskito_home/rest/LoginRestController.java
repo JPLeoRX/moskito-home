@@ -26,7 +26,15 @@ public class LoginRestController {
     @Autowired
     private UserService userService;
 
-    // http://localhost:8080/api/login?state=abc&client_id=alexa-skill&scope=order_car%20basic_profile&response_type=token&redirect_uri=https%3A%2F%2Fpitangui.amazon.com%2Fspa%2Fskill%2Faccount-linking-status.html%3FvendorId%3DAAAAAAAAAAAAAA
+    /**
+     * This is called when alexa starts login procedure
+     *
+     * Alexa will pass all the required parameters in URL
+     * We will store her request and pass user to our login page
+     *
+     * Test with
+     * http://localhost:8080/api/login?state=abc&client_id=alexa-skill&scope=order_car%20basic_profile&response_type=token&redirect_uri=https%3A%2F%2Fpitangui.amazon.com%2Fspa%2Fskill%2Faccount-linking-status.html%3FvendorId%3DAAAAAAAAAAAAAA
+     */
     @RequestMapping(value = "/api/login")
     public ModelAndView alexaLogin(HttpServletRequest request, HttpServletResponse response,
                                    @RequestParam String state,
@@ -50,6 +58,12 @@ public class LoginRestController {
         return mav;
     }
 
+    /**
+     * This is called when user was redirected to our login page, and when he submits the login form
+     *
+     * If login is successful we redirect user back to Alexa
+     * We pass all the required parameters in the URL
+     */
     @RequestMapping(value = "/api/loginProcess", method = RequestMethod.POST)
     public ModelAndView alexaLoginProcess(HttpServletRequest request, HttpServletResponse response, @ModelAttribute("login") Login login, @ModelAttribute("alexaRequest") AlexaRequest alexaRequest) {
         // See if we obtained correct data
@@ -73,8 +87,10 @@ public class LoginRestController {
             // Create new MAV redirecting to the same login page
             ModelAndView mav = new ModelAndView("login");
 
-            // Add new message model
+            // Add message, login and alexa's request
             mav.addObject("message", "Username or password is incorrect!");
+            mav.addObject("login", login);
+            mav.addObject("alexaRequest", alexaRequest);
 
             // Return MAV
             return mav;

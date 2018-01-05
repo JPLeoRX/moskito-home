@@ -4,7 +4,7 @@
     <title>MoSKito Home - Welcome</title>
 </head>
 <body>
-    <table>
+    <table align="center">
         <tr>
             <td>Welcome!</td>
         </tr>

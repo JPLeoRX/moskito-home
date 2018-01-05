@@ -1,4 +1,4 @@
-package org.moskito.moskito_home.rest;
+package org.moskito.moskito_home.rest.responses;
 
 public class JsonAppUrlResponse {
     private String app_url;
