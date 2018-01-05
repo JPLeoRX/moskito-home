@@ -43,6 +43,9 @@ public class LoginRestController {
                                    @RequestParam(required = false) List<String> scope,
                                    @RequestParam String redirect_uri
     ) {
+
+        log.debug("Full URL:  " + (request.getRequestURL().toString() + "?" + request.getQueryString()));
+
         // Create alexa's request
         AlexaRequest alexaRequest = new AlexaRequest(state, client_id, response_type, scope, redirect_uri);
         log.debug(alexaRequest);
@@ -74,11 +77,18 @@ public class LoginRestController {
 
         // If user successfully logged in
         if (user != null) {
-            // Create new MAV for redirecting
-            ModelAndView mav = new ModelAndView("/api/loginRedirect");
-            mav.addObject("alexaRequest", alexaRequest);
-            mav.addObject("username", user.getUsername());
-            return mav;
+            // Create new response for Alexa
+            AlexaResponse alexaResponse = new AlexaResponse(alexaRequest.getRedirectUrl(), alexaRequest.getState(), new TokenManager(user.getUsername()).getAccessToken(), "Bearer");
+            log.debug(alexaResponse);
+
+            // Return new redirect MAV
+            return new ModelAndView("redirect:" + alexaResponse.toUrl());
+//
+//            // Create new MAV for redirecting
+//            ModelAndView mav = new ModelAndView("/api/loginRedirect");
+//            mav.addObject("alexaRequest", alexaRequest);
+//            mav.addObject("username", user.getUsername());
+//            return mav;
         }
 
         // If not
