@@ -7,6 +7,7 @@ import org.moskito.moskito_home.model.Login;
 import org.moskito.moskito_home.model.User;
 import org.moskito.moskito_home.rest.alexa_authorization.AlexaRequest;
 import org.moskito.moskito_home.rest.alexa_authorization.AlexaResponse;
+import org.moskito.moskito_home.rest.alexa_authorization.TokenManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -60,7 +61,7 @@ public class LoginRestController {
         // If user successfully logged in
         if (user != null) {
             // Create new response for Alexa
-            AlexaResponse alexaResponse = new AlexaResponse(alexaRequest.getRedirectUrl(), alexaRequest.getState(), "myToken", "Bearer");
+            AlexaResponse alexaResponse = new AlexaResponse(alexaRequest.getRedirectUrl(), alexaRequest.getState(), new TokenManager(user.getUsername()).getAccessToken(), "Bearer");
             log.debug(alexaResponse);
 
             // Return new redirect MAV

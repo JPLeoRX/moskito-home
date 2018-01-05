@@ -27,6 +27,7 @@ public class AlexaResponse {
     }
     //------------------------------------------------------------------------------------------------------------------
 
+    // Combine the base redirect url wih all the parameters
     public String toUrl() {
         String url = redirectUrl + "#";
         url += "state=" + state;
