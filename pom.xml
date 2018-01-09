@@ -107,5 +107,75 @@
 
     <build>
         <finalName>moskito-home</finalName>
+
+        <!--<plugins>-->
+            <!--<plugin>-->
+                <!--<groupId>org.apache.maven.plugins</groupId>-->
+                <!--<artifactId>maven-compiler-plugin</artifactId>-->
+                <!--<version>3.7.0</version>-->
+                <!--<configuration>-->
+                    <!--<source>1.8</source>-->
+                    <!--<target>1.8</target>-->
+                <!--</configuration>-->
+            <!--</plugin>-->
+
+            <!--<plugin>-->
+                <!--<artifactId>maven-war-plugin</artifactId>-->
+                <!--<version>3.2.0</version>-->
+                <!--<configuration>-->
+                    <!--<webXml>src/main/webapp/WEB-INF/web.xml</webXml>-->
+                    <!--<failOnMissingWebXml>true</failOnMissingWebXml>-->
+                <!--</configuration>-->
+            <!--</plugin>-->
+
+            <!--<plugin>-->
+                <!--<groupId>org.apache.tomcat.maven</groupId>-->
+                <!--<artifactId>tomcat7-maven-plugin</artifactId>-->
+                <!--<version>2.2</version>-->
+                <!--<configuration>-->
+                    <!--<url>https://alexa-test.moskito.org:8080/manager/text</url>-->
+                    <!--<server>moskito</server>-->
+                    <!--<path>/moskito</path>-->
+                    <!--<username>tomcat</username>-->
+                    <!--<password>tomcat</password>-->
+                    <!--<update>true</update>-->
+                <!--</configuration>-->
+            <!--</plugin>-->
+        <!--</plugins>-->
+
+        <extensions>
+            <extension>
+                <groupId>org.apache.maven.wagon</groupId>
+                <artifactId>wagon-ssh</artifactId>
+                <version>3.0.0</version>
+            </extension>
+        </extensions>
+
+
+        <plugins>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>wagon-maven-plugin</artifactId>
+                <version>1.0</version>
+
+                <configuration>
+                    <serverId>moskito</serverId>
+                    <fromFile>${project.build.directory}/${project.build.finalName}.war</fromFile>
+                    <url>scp://zeno@10.110.237.21/home/zeno/apache-tomcat-8.5.24/webapps</url>
+                </configuration>
+
+                <executions>
+                    <execution>
+                        <id>my-deploy</id>
+                        <phase>deploy</phase>
+                        <goals>
+                            <goal>upload-single</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+
+
     </build>
 </project>
