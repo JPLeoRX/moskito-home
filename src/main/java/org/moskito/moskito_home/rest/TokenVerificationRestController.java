@@ -12,6 +12,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+/**
+ * Use this REST controller to verify if the current token is still active
+ *
+ * If the token is not valid you should ask your user to perform login again
+ *
+ * @author Leo Ertuna
+ */
 @RestController
 @RequestMapping("api/token/{accessToken}")
 public class TokenVerificationRestController {
@@ -30,6 +37,7 @@ public class TokenVerificationRestController {
 
         // If token was invalid
         if (username == null)
+            // False response
             return new JsonTokenVerificationResponse(false);
 
         // Get the user
@@ -38,9 +46,10 @@ public class TokenVerificationRestController {
 
         // If no user was found
         if (user == null)
+            // False response
             return new JsonTokenVerificationResponse(false);
 
-        // If everything worked fine
+        // If everything worked fine - true response
         return new JsonTokenVerificationResponse(true);
     }
 }

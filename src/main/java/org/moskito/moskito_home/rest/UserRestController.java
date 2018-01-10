@@ -9,6 +9,13 @@ import org.springframework.web.bind.annotation.*;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+/**
+ * Use this REST controller to access the user's app url
+ *
+ * Call this only if you made sure that the token is valid
+ *
+ * @author Leo Ertuna
+ */
 @RestController
 @RequestMapping("/api/users/{accessToken}")
 public class UserRestController {

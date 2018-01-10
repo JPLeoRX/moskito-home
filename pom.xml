@@ -10,6 +10,9 @@
     <packaging>war</packaging>
 
     <properties>
+        <source.version>1.8</source.version>
+        <target.version>1.8</target.version>
+
         <junit.version>4.12</junit.version>
         <servlet.version>4.0.0</servlet.version>
         <mysql.connector.version>6.0.6</mysql.connector.version>
@@ -19,6 +22,13 @@
         <jackson.version>1.9.13</jackson.version>
 
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+
+        <wagon.version>1.0</wagon.version>
+        <wagon.serverId>moskito</wagon.serverId>
+        <wagon.serverUser>zeno</wagon.serverUser>
+        <wagon.serverIpAdress>10.110.237.21</wagon.serverIpAdress>
+        <wagon.serverWarPath>home/zeno/apache-tomcat-8.5.24/webapps</wagon.serverWarPath>
+        <wagon-ssh.version>3.0.0</wagon-ssh.version>
     </properties>
 
 
@@ -105,68 +115,42 @@
         </dependency>
     </dependencies>
 
+
+
+
+
+
+
+    <!-- Build using "mvn clean install compile war:war wagon:upload-single@deploy-war" -->
     <build>
         <finalName>moskito-home</finalName>
 
-        <!--<plugins>-->
-            <!--<plugin>-->
-                <!--<groupId>org.apache.maven.plugins</groupId>-->
-                <!--<artifactId>maven-compiler-plugin</artifactId>-->
-                <!--<version>3.7.0</version>-->
-                <!--<configuration>-->
-                    <!--<source>1.8</source>-->
-                    <!--<target>1.8</target>-->
-                <!--</configuration>-->
-            <!--</plugin>-->
-
-            <!--<plugin>-->
-                <!--<artifactId>maven-war-plugin</artifactId>-->
-                <!--<version>3.2.0</version>-->
-                <!--<configuration>-->
-                    <!--<webXml>src/main/webapp/WEB-INF/web.xml</webXml>-->
-                    <!--<failOnMissingWebXml>true</failOnMissingWebXml>-->
-                <!--</configuration>-->
-            <!--</plugin>-->
-
-            <!--<plugin>-->
-                <!--<groupId>org.apache.tomcat.maven</groupId>-->
-                <!--<artifactId>tomcat7-maven-plugin</artifactId>-->
-                <!--<version>2.2</version>-->
-                <!--<configuration>-->
-                    <!--<url>https://alexa-test.moskito.org:8080/manager/text</url>-->
-                    <!--<server>moskito</server>-->
-                    <!--<path>/moskito</path>-->
-                    <!--<username>tomcat</username>-->
-                    <!--<password>tomcat</password>-->
-                    <!--<update>true</update>-->
-                <!--</configuration>-->
-            <!--</plugin>-->
-        <!--</plugins>-->
-
+        <!-- Maven Wagon - SSH encryption (to enable ssh-key authorization for remote server) -->
         <extensions>
             <extension>
                 <groupId>org.apache.maven.wagon</groupId>
                 <artifactId>wagon-ssh</artifactId>
-                <version>3.0.0</version>
+                <version>${wagon-ssh.version}</version>
             </extension>
         </extensions>
 
 
         <plugins>
+            <!-- Maven Wagon (plugin for remote deployment) -->
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>wagon-maven-plugin</artifactId>
-                <version>1.0</version>
+                <version>${wagon.version}</version>
 
                 <configuration>
-                    <serverId>moskito</serverId>
+                    <serverId>${wagon.serverId}</serverId>
                     <fromFile>${project.build.directory}/${project.build.finalName}.war</fromFile>
-                    <url>scp://zeno@10.110.237.21/home/zeno/apache-tomcat-8.5.24/webapps</url>
+                    <url>scp://${wagon.serverUser}@${wagon.serverIpAdress}/${wagon.serverWarPath}</url>
                 </configuration>
 
                 <executions>
                     <execution>
-                        <id>my-deploy</id>
+                        <id>deploy-war</id>
                         <phase>deploy</phase>
                         <goals>
                             <goal>upload-single</goal>
@@ -175,7 +159,5 @@
                 </executions>
             </plugin>
         </plugins>
-
-
     </build>
 </project>

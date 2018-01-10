@@ -19,17 +19,22 @@ public class RegistrationController {
 
     @RequestMapping(value = "/register", method = RequestMethod.GET)
     public ModelAndView showRegister(HttpServletRequest request, HttpServletResponse response) {
+        // Create new MAV
         ModelAndView modelAndView = new ModelAndView("register");
 
+        // Add new User model
         modelAndView.addObject("user", new User());
 
+        // Return MAV
         return modelAndView;
     }
 
     @RequestMapping(value = "/registerProcess", method = RequestMethod.POST)
     public ModelAndView addUser(HttpServletRequest request, HttpServletResponse response, @ModelAttribute("user") User user) {
+        // Perform user registration
         userService.register(user);
 
+        // Return new Welcome MAV
         return new ModelAndView("welcome");
     }
 }
