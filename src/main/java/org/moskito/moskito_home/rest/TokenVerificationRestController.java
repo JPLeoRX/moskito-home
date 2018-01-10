@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
  * @author Leo Ertuna
  */
 @RestController
-@RequestMapping("api/token/{accessToken}")
+@RequestMapping("/api/token/{accessToken}")
 public class TokenVerificationRestController {
     private static final Logger log = LogManager.getLogger();
 
