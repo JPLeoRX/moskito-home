@@ -28,6 +28,6 @@
         <property name="driverClassName" value="com.mysql.jdbc.Driver" />
         <property name="url" value="jdbc:mysql://localhost:3306/moskito_home" />
         <property name="username" value="root" />
-        <property name="password" value="1234" />
+        <property name="password" value="8d64971df3" />
     </bean>
 </beans>

@@ -12,6 +12,7 @@
     <properties>
         <source.version>1.8</source.version>
         <target.version>1.8</target.version>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
         <junit.version>4.12</junit.version>
         <servlet.version>4.0.0</servlet.version>
@@ -20,8 +21,6 @@
         <log4j.version>2.10.0</log4j.version>
         <java-jwt.version>3.3.0</java-jwt.version>
         <jackson.version>1.9.13</jackson.version>
-
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
         <wagon.version>1.0</wagon.version>
         <wagon.serverId>moskito</wagon.serverId>
@@ -136,6 +135,18 @@
 
 
         <plugins>
+            <!-- Maven Compiler -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.7.0</version>
+                <configuration>
+                    <source>${source.version}</source>
+                    <target>${target.version}</target>
+                    <encoding>${project.build.sourceEncoding}</encoding>
+                </configuration>
+            </plugin>
+
             <!-- Maven Wagon (plugin for remote deployment) -->
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
